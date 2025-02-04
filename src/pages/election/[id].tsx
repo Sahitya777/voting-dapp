@@ -167,6 +167,7 @@ const Index = () => {
           marginTop: "1rem",
           padding: "4rem",
           display: "flex",
+          flexWrap: candidates.length>4?"wrap":'nowrap',
           width: "100%",
         }}
       >
@@ -182,7 +183,9 @@ const Index = () => {
             Loading...
           </div>
         )}
-        {candidates?.map((candidate: any, index: number) => (
+        {candidates?.filter((candidate:any,index:number)=>{
+          return !candidate.contestantAddress.includes('0x00000')
+        }).map((candidate: any, index: number) => (
           <div
             key={index}
             style={{
@@ -192,6 +195,7 @@ const Index = () => {
               color: "#C9D3EE",
               cursor: "pointer",
               display: "flex",
+              marginTop:'2rem',
               marginLeft: "2rem",
               flexWrap: "wrap",
               borderRadius: "6px",
@@ -208,7 +212,6 @@ const Index = () => {
                 alignItems: "center",
               }}
             >
-              <div>Candidate {index + 1}</div>
               <div>{candidate?.name}</div>
               <div>{candidate.contestantAddress}</div>
               <div>Votes: {Number(candidate?.votes)}</div>

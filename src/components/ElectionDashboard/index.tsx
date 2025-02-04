@@ -29,6 +29,7 @@ const Electiondashboard = () => {
         padding: "4rem",
         display: "flex",
         width: "100%",
+        flexWrap: elections.length>4?"wrap":'nowrap',
       }}
     >
       {elections.length == 0 && (
