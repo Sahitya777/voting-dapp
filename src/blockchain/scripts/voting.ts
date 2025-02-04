@@ -3,22 +3,43 @@ import votingAbi from '../abis/voting.abi.json'
 export const getElections=async()=>{
     try {
         const provider=new ethers.providers.JsonRpcProvider('https://rpc-holesky.rockx.com')
-        const contract=new ethers.Contract('0x74c90A36FDB84faff462eA7A2A5A64c2FB97D575',votingAbi,provider)
-        console.log(contract,'contract')
+        const contract=new ethers.Contract('0x50a1068E756A13DE3C42633236c0eE75a308b6c5',votingAbi,provider)
         const elections=await contract.getAllPolls()
-        console.log(elections,'elec')
+        return elections
     } catch (error) {
         console.log(error,'err in get call for elections')
     }
 }
 
-// export async function assetBalance(account:string,asset:string){
-//     try {
-//       const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
-//       const contract = new ethers.Contract(tokenAddressMap[asset], erc20abi, provider);
-//       const balance=await contract.balanceOf(account)
-//       return parseAmount(String( Number(balance)),tokenDecimalsMap[asset])
-//     } catch (error) {
-//       console.log(error,'err in balance')
-//     }
-// }
+export const getContestants=async(pollId:number)=>{
+    try {
+        const provider=new ethers.providers.JsonRpcProvider('https://rpc-holesky.rockx.com')
+        const contract=new ethers.Contract('0x50a1068E756A13DE3C42633236c0eE75a308b6c5',votingAbi,provider)
+        const contestants=await contract.getContestants(pollId)
+        return contestants
+    } catch (error) {
+        console.log(error,'err in get call for elections')
+    }
+}
+
+export const getWhiteListedVoters=async(pollId:number)=>{
+    try {
+        const provider=new ethers.providers.JsonRpcProvider('https://rpc-holesky.rockx.com')
+        const contract=new ethers.Contract('0x50a1068E756A13DE3C42633236c0eE75a308b6c5',votingAbi,provider)
+        const voters=await contract.getWhitelistedVoters(pollId)
+        return voters
+    } catch (error) {
+        console.log(error,'err in get call for elections')
+    }
+}
+
+export const getWinner=async(pollId:number)=>{
+    try {
+        const provider=new ethers.providers.JsonRpcProvider('https://rpc-holesky.rockx.com')
+        const contract=new ethers.Contract('0x50a1068E756A13DE3C42633236c0eE75a308b6c5',votingAbi,provider)
+        const voters=await contract.getWinner(pollId)
+        return voters
+    } catch (error) {
+        console.log(error,'err in get call for elections')
+    }
+}

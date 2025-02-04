@@ -3,49 +3,50 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 const Electiondashboard = () => {
-    const [elections, setelections] = useState([
-        {
-            candidates:[],
-            name:'asas',
-            verdict:'asas',
-            time:'asas',
-            id:'23'
-        },{
-            candidates:[],
-            name:'asas',
-            verdict:'asas',
-            time:'asas',
-            id:'23'
-        },{
-            candidates:[],
-            name:'asas',
-            verdict:'asas',
-            time:'asas',
-            id:'23'
-        },
-        
-    ])
+    const [elections, setelections] = useState<any>([])
     const router=useRouter()
 
     useEffect(()=>{
         const fetchVal=async()=>{
             const res=await getElections()
+            if(res){
+                setelections(res)
+            }
         }
         fetchVal()
     },[])
 
+    function epochToDateTime(epoch:number) {
+        const date = new Date(epoch * 1000); // Convert seconds to milliseconds
+        return date.toLocaleString(); // Convert to local date-time string
+    }
+    
+
   return (
     <div style={{marginTop:'1rem',padding:'4rem',display:'flex',width:'100%'}}>
-        {elections.map((election,index:number)=>(
-            <div key={index} style={{padding:'8px',width:'100%', background:'grey',cursor:'pointer', display:'flex',marginLeft:'2rem',flexWrap:'wrap',borderRadius:'6px',alignItems:'center',justifyContent:'center'}} onClick={()=>{
-                router.push(`/election/${election.id}`)
+        {elections.length==0 &&
+        <div style={{marginTop:'2rem',fontSize:'40px',width:'100%',textAlign:'center'}}>
+            Loading...
+        </div>}
+        {elections?.map((election:any,index:number)=>(
+            <div key={index} style={{padding:'16px',width:'500px',flexFlow:'wrap', background:'#151621',color:"#C9D3EE",cursor:'pointer', display:'flex',marginLeft:'2rem',flexWrap:'wrap',borderRadius:'6px',alignItems:'center',justifyContent:'center'}} onClick={()=>{
+                router.push(`/election/${Number(election.id)}`)
             }}>
-                <div>
+                <div style={{display:'flex',flexDirection:'column',gap:'0.5rem'}}>
                     <div>
-                        {election.name}
+                        {election.title}
                     </div>
                     <div>
-                        {election.time}
+                        Director: {election.director}
+                    </div>
+                    <div>
+                        Voting Begins At : {epochToDateTime(Number(election.startsAt))}
+                    </div>
+                    <div>
+                        Voting Ends At : {epochToDateTime(Number(election.endsAt))}
+                    </div>
+                    <div>
+                        Total Votes: {Number(election.votes)}
                     </div>
                 </div>
             </div>
